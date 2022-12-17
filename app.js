@@ -1,9 +1,30 @@
-// packages and files
+// required packages and files
 const express = require('express');
+const mongoose = require('mongoose');
 
-// set parameters
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
+// set variables
 const app = express();
 const port = 3000;
+
+// connect to MongoDB
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+
+db.on('error', () => {
+  console.log('mongodb error!');
+});
+
+db.once('open', () => {
+  console.log('mongodb connected!');
+});
 
 // routes
 app.get('/', (req, res) => {
