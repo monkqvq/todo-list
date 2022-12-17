@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
+const Todo = require('./models/todo');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -33,7 +34,10 @@ app.set('view engine', 'hbs');
 
 // routes
 app.get('/', (req, res) => {
-  res.render('index');
+  Todo.find()
+    .lean()
+    .then((todos) => res.render('index', { todos }))
+    .catch((error) => console.log(error));
 });
 
 // start and listen on the Express server
