@@ -1,6 +1,7 @@
 // required packages and files
 const express = require('express');
 const mongoose = require('mongoose');
+const exphbs = require('express-handlebars');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -26,9 +27,13 @@ db.once('open', () => {
   console.log('mongodb connected!');
 });
 
+// set app view engine
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
+app.set('view engine', 'hbs');
+
 // routes
 app.get('/', (req, res) => {
-  res.send('hello world');
+  res.render('index');
 });
 
 // start and listen on the Express server
